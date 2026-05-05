@@ -10,29 +10,6 @@ public class Main {
 
         database.loadData();
 
-        // Pre-loaded data (Proving Polymorphism)
-        Character hero = new Character("C-001", "Marcus Lowenthal", "A rogue with a hidden past.", "Protagonist");
-        hero.setPrimaryGoal("Find the lost artifact.");
-        hero.setFatalFlaw("Trusts no one.");
-        
-        Location city = new Location("L-001", "Marthul", "The glowing city of mages.");
-        city.setLocationType("Metropolis");
-        city.setAssociatedTerritory("The Northern Border");
-        
-        WorldSystem magic = new WorldSystem("S-001", "Resonance", "Magic based on sound.");
-        magic.setSystemCategory("Magic");
-        magic.addRule("Spells require perfect vocal pitch.");
-
-        database.addElement(hero);
-        database.addElement(city);
-        database.addElement(magic);
-
-        // Pre-loaded Chapter Tracker (Proving Association)
-        currentChapter.setChapterNumber(1);
-        currentChapter.setPovCharacter(hero); 
-        currentChapter.setPlotBeat("The hero arrives at the gates.");
-        currentChapter.setChapterSummary("Marcus reaches Marthul but is denied entry.");
-
         System.out.println("=========================================");
         System.out.println("              WORLD NEXUS                ");
         System.out.println("=========================================");
@@ -44,8 +21,10 @@ public class Main {
             System.out.println("3. Search Database (Proves Overloading & Interfaces)");
             System.out.println("4. Filter by Category");
             System.out.println("5. View Current Chapter Tracker (Proves Association)");
-            System.out.println("6. Exit System");
-            System.out.print("Select an option (1-6): ");
+            System.out.println("6. Edit Entity Description (Update)"); 
+            System.out.println("7. Delete Entity (Delete)");           
+            System.out.println("8. Save and Exit System");           
+            System.out.print("Select an option (1-8): ");
 
             String choice = scanner.nextLine();
 
@@ -149,9 +128,40 @@ public class Main {
                     break;
 
                 case "6":
+                    System.out.println("\n--- UPDATE ENTITY ---");
+                    System.out.print("Enter the ID of the entity you want to edit: ");
+                    String updateId = scanner.nextLine();
+                    StoryElement elementToUpdate = database.getElementById(updateId);
+                    
+                    if (elementToUpdate != null) {
+                        System.out.println("Editing: " + elementToUpdate.getName());
+                        System.out.println("Current Description: " + elementToUpdate.getDescription());
+                        System.out.print("Enter NEW Description: ");
+                        String newDesc = scanner.nextLine();
+                        elementToUpdate.setDescription(newDesc);
+                        System.out.println("SUCCESS: Entity updated.");
+                    } else {
+                        System.out.println("ERROR: No entity found with ID '" + updateId + "'.");
+                    }
+                    break;
+
+                case "7":
+                    System.out.println("\n--- DELETE ENTITY ---");
+                    System.out.print("Enter the ID of the entity you want to permanently delete: ");
+                    String deleteId = scanner.nextLine();
+                    
+                    boolean isDeleted = database.deleteElement(deleteId);
+                    if (isDeleted) {
+                        System.out.println("SUCCESS: Entity '" + deleteId + "' has been deleted.");
+                    } else {
+                        System.out.println("ERROR: No entity found with ID '" + deleteId + "'.");
+                    }
+                    break;
+
+                case "8": // Remember to change the exit case to 8!
                     System.out.println("\nSaving narrative data...");
-                    database.saveData();    
-                    System.out.println("\nSaving narrative data... Shutting down World Nexus.");
+                    database.saveData(); 
+                    System.out.println("Shutting down World Nexus.");
                     running = false;
                     break;
 

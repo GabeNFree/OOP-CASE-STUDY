@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +12,11 @@ public class Location extends StoryElement {
         this.importantDetails = new ArrayList<>();
     }
 
-    public String getLocationType() { return locationType; }
-    public void setLocationType(String type) { this.locationType = type; }
-    public String getAssociatedTerritory() { return associatedTerritory; }
-    public void setAssociatedTerritory(String territory) { this.associatedTerritory = territory; }
-    public List<String> getImportantDetails() { return importantDetails; }
+    public String getLocationType() {return locationType;}
+    public void setLocationType(String type) {this.locationType = type;}
+    public String getAssociatedTerritory() {return associatedTerritory;}
+    public void setAssociatedTerritory(String territory) { this.associatedTerritory = territory;}
+    public List<String> getImportantDetails() {return importantDetails;}
     
     public void addImportantDetail(String detail) {
         this.importantDetails.add(detail);

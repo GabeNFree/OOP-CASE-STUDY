@@ -1,9 +1,11 @@
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorldDatabase {
-    private List<StoryElement> allElements; 
+
+    private List<StoryElement> allElements;
     private final String SAVE_FILE = "world_nexus_save.dat";
 
     public WorldDatabase() {
@@ -42,6 +44,23 @@ public class WorldDatabase {
             }
         }
         return results;
+    }
+
+    // Finds exact item by ID
+    public StoryElement getElementById(String id) {
+        for (StoryElement element : allElements) {
+            if (element.getId().equalsIgnoreCase(id)) {
+                return element;
+            }
+        }
+        return null; // Returns null if not found
+    }
+
+    // Removes an item by ID
+    public boolean deleteElement(String id) {
+        // removeIf searches the list and delete if the ID matches. 
+        // returns true if it successfully deletes something.
+        return allElements.removeIf(element -> element.getId().equalsIgnoreCase(id));
     }
 
     public List<StoryElement> filterByType(String className) {
