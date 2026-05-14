@@ -158,7 +158,7 @@ public class Main {
                     }
                     break;
 
-                case "8": // Remember to change the exit case to 8!
+                case "8":
                     System.out.println("\nSaving narrative data...");
                     database.saveData(); 
                     System.out.println("Shutting down World Nexus.");
