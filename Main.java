@@ -1,7 +1,9 @@
 public class Main {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> {
-            DashboardWindow dashboardWindow = new DashboardWindow();
+            WorldDatabase worldDatabase = new WorldDatabase();
+            worldDatabase.loadData();
+            DashboardWindow dashboardWindow = new DashboardWindow(worldDatabase);
             dashboardWindow.setVisible(true);
         });
     }

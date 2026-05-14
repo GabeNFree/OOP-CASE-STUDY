@@ -3,7 +3,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class CharactersWindow extends JFrame {
-    public CharactersWindow() {
+    private final WorldDatabase worldDatabase;
+
+    public CharactersWindow(WorldDatabase worldDatabase) {
+        this.worldDatabase = worldDatabase;
         setTitle("Characters");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 450);
