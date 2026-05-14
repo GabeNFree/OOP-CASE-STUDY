@@ -11,8 +11,6 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.RenderingHints;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.function.Supplier;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -25,10 +23,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class DashboardWindow extends JFrame {
-    private final WorldDatabase worldDatabase;
+    private WorldDatabase database;
 
-    public DashboardWindow(WorldDatabase worldDatabase) {
-        this.worldDatabase = worldDatabase;
+    public DashboardWindow(WorldDatabase database) {
+        this.database = database;
+
         setTitle("World Database Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(720, 480);
@@ -62,12 +61,6 @@ public class DashboardWindow extends JFrame {
         card.add(center, BorderLayout.CENTER);
         frameBg.add(card, BorderLayout.CENTER);
         setContentPane(frameBg);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent event) {
-                DashboardWindow.this.worldDatabase.saveData();
-            }
-        });
     }
 
     private JPanel buildSearchRow() {
@@ -107,6 +100,11 @@ public class DashboardWindow extends JFrame {
                 "\uD83D\uDC65  CHARACTERS",
                 new Color(75, 122, 166),
                 new Color(56, 95, 132));
+        charactersButton.addActionListener(e -> {
+            CharactersWindow win = new CharactersWindow(database, null);
+            win.setVisible(true);
+        });
+
         DashboardTileButton locationsButton = new DashboardTileButton(
                 "\u25CC  LOCATIONS",
                 new Color(103, 138, 128),
@@ -120,10 +118,9 @@ public class DashboardWindow extends JFrame {
                 new Color(107, 139, 102),
                 new Color(85, 118, 81));
 
-        wireNavigation(charactersButton, () -> new CharactersWindow(worldDatabase));
-        wireNavigation(locationsButton, () -> new LocationsWindow(worldDatabase));
-        wireNavigation(systemsButton, () -> new WorldSystemsWindow(worldDatabase));
-        wireNavigation(chapterButton, () -> new ChapterOutlinerWindow(worldDatabase));
+        wireNavigation(locationsButton, () -> new LocationsWindow(database));
+        wireNavigation(systemsButton, () -> new WorldSystemsWindow(database));
+        wireNavigation(chapterButton, () -> new ChapterOutlinerWindow(database));
 
         grid.add(charactersButton);
         grid.add(locationsButton);
