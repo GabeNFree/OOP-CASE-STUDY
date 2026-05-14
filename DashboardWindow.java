@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.RenderingHints;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.function.Supplier;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -35,7 +37,7 @@ public class DashboardWindow extends JFrame {
         setResizable(false);
 
         JPanel frameBg = new JPanel(new BorderLayout());
-        frameBg.setBackground(new Color(216, 221, 224));
+        frameBg.setBackground(new Color(236, 239, 243));
         frameBg.setBorder(BorderFactory.createEmptyBorder(14, 16, 16, 16));
 
         RoundedPanel card = new RoundedPanel(new BorderLayout(), 8, new Color(237, 238, 239));
@@ -61,6 +63,13 @@ public class DashboardWindow extends JFrame {
         card.add(center, BorderLayout.CENTER);
         frameBg.add(card, BorderLayout.CENTER);
         setContentPane(frameBg);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                database.saveData();
+            }
+        });
     }
 
     private JPanel buildSearchRow() {

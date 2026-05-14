@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,6 +42,13 @@ public class ChapterOutlinerWindow extends JFrame {
         setSize(1200, 640);
         setLocationRelativeTo(null);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                saveCurrentChapterFromForm();
+            }
+        });
+
         loadChaptersFromDatabase();
 
         JPanel root = new JPanel(new BorderLayout(8, 8));
@@ -47,7 +56,7 @@ public class ChapterOutlinerWindow extends JFrame {
         root.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
         JLabel title = new JLabel("\uD83D\uDCDD  Chapter-by-Chapter Outliner");
-        title.setFont(new Font("SansSerif", Font.PLAIN, 36 / 2));
+        title.setFont(new Font("SansSerif", Font.PLAIN, 20));
         root.add(title, BorderLayout.NORTH);
 
         JPanel form = new JPanel(new GridBagLayout());

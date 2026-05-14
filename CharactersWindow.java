@@ -24,11 +24,14 @@ import javax.swing.border.EmptyBorder;
 
 public class CharactersWindow extends JFrame {
     private static final Color HEADER_BG = new Color(210, 218, 226);
-    private static final Color CONTENT_BG = new Color(240, 242, 245);
+    private static final Color CONTENT_BG = new Color(236, 239, 243);
     private static final Color SECTION_HEADER_BG = new Color(230, 232, 245);
     private static final Color TEXT_COLOR = new Color(46, 49, 51);
     private static final Color BORDER_COLOR = new Color(200, 204, 208);
     private static final Color ACCENT_COLOR = new Color(75, 122, 166);
+    
+    // ... skipping unchanged lines, I should provide exactly the lines to replace ...
+    // Let's be careful and replace just the variables and the font individually.
 
     private JTextField nameField, roleField, mainGoalField, currentGoalField, flawField;
     private JComboBox<String> arcTypeCombo;
@@ -94,7 +97,7 @@ public class CharactersWindow extends JFrame {
         iconLabel.setForeground(new Color(100, 110, 200));
         
         JLabel titleLabel = new JLabel("Character Profile");
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        titleLabel.setFont(new Font("SansSerif", Font.PLAIN, 20));
         titleLabel.setForeground(TEXT_COLOR);
         titleLabel.setBorder(new EmptyBorder(0, 15, 0, 0));
 
