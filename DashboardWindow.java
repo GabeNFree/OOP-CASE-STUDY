@@ -23,7 +23,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class DashboardWindow extends JFrame {
+    private WorldDatabase database;
+
     public DashboardWindow() {
+        this.database = new WorldDatabase();
+        this.database.loadData();
+
         setTitle("World Database Dashboard");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(720, 480);
@@ -96,6 +101,11 @@ public class DashboardWindow extends JFrame {
                 "\uD83D\uDC65  CHARACTERS",
                 new Color(75, 122, 166),
                 new Color(56, 95, 132));
+        charactersButton.addActionListener(e -> {
+            CharactersWindow win = new CharactersWindow(database, null);
+            win.setVisible(true);
+        });
+
         DashboardTileButton locationsButton = new DashboardTileButton(
                 "\u25CC  LOCATIONS",
                 new Color(103, 138, 128),
@@ -109,7 +119,6 @@ public class DashboardWindow extends JFrame {
                 new Color(107, 139, 102),
                 new Color(85, 118, 81));
 
-        wireNavigation(charactersButton, CharactersWindow::new);
         wireNavigation(locationsButton, LocationsWindow::new);
         wireNavigation(systemsButton, WorldSystemsWindow::new);
         wireNavigation(chapterButton, ChapterOutlinerWindow::new);
