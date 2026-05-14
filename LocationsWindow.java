@@ -32,6 +32,7 @@ public class LocationsWindow extends JFrame {
     private static final String CUSTOM_OPTION = "Custom...";
     private static final String TERRITORY_PLACEHOLDER = "[Enter Territory Name]";
 
+    private final WorldDatabase worldDatabase;
     private final Map<String, Location> locationTypeData = new LinkedHashMap<>();
     private final Map<String, List<String>> territoryHistoryByType = new LinkedHashMap<>();
     private JComboBox<String> locationTypeCombo;
@@ -42,7 +43,8 @@ public class LocationsWindow extends JFrame {
     private String currentType;
     private boolean suppressTypeEvents;
 
-    public LocationsWindow() {
+    public LocationsWindow(WorldDatabase worldDatabase) {
+        this.worldDatabase = worldDatabase;
         setTitle("Location & Territory Manager");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1280, 650);
@@ -65,6 +67,7 @@ public class LocationsWindow extends JFrame {
         root.add(body, BorderLayout.CENTER);
         setContentPane(root);
 
+        loadLocationTypesFromDatabase();
         refreshTerritoryField();
         refreshTerritoryList();
         refreshDetailsArea();
@@ -210,6 +213,60 @@ public class LocationsWindow extends JFrame {
         refreshTerritoryField();
         refreshTerritoryList();
         refreshDetailsArea();
+    }
+
+    private void loadLocationTypesFromDatabase() {
+        for (StoryElement element : worldDatabase.filterByType("Location")) {
+            Location dbLocation = (Location) element;
+            String typeName = dbLocation.getLocationType();
+            if (typeName == null || typeName.trim().isEmpty()) {
+                continue;
+            }
+            String normalizedType = typeName.trim();
+            Location mapped = locationTypeData.get(normalizedType);
+            if (mapped == null) {
+                locationTypeData.put(normalizedType, dbLocation);
+                if (dbLocation.getAssociatedTerritory() != null && !dbLocation.getAssociatedTerritory().trim().isEmpty()) {
+                    getTerritoryHistory(normalizedType).add(dbLocation.getAssociatedTerritory().trim());
+                }
+                continue;
+            }
+
+            if ((mapped.getAssociatedTerritory() == null || mapped.getAssociatedTerritory().trim().isEmpty())
+                    && dbLocation.getAssociatedTerritory() != null) {
+                mapped.setAssociatedTerritory(dbLocation.getAssociatedTerritory());
+            }
+            for (String detail : dbLocation.getImportantDetails()) {
+                if (!mapped.getImportantDetails().contains(detail)) {
+                    mapped.addImportantDetail(detail);
+                }
+            }
+            String territory = dbLocation.getAssociatedTerritory();
+            if (territory != null && !territory.trim().isEmpty()) {
+                List<String> history = getTerritoryHistory(normalizedType);
+                if (!history.contains(territory.trim())) {
+                    history.add(territory.trim());
+                }
+            }
+        }
+
+        syncTypeDropdownFromMap();
+        if (!locationTypeData.isEmpty()) {
+            currentType = locationTypeData.keySet().iterator().next();
+            suppressTypeEvents = true;
+            locationTypeCombo.setSelectedItem(currentType);
+            suppressTypeEvents = false;
+        }
+    }
+
+    private void syncTypeDropdownFromMap() {
+        suppressTypeEvents = true;
+        locationTypeCombo.removeAllItems();
+        for (String typeName : locationTypeData.keySet()) {
+            locationTypeCombo.addItem(typeName);
+        }
+        locationTypeCombo.addItem(CUSTOM_OPTION);
+        suppressTypeEvents = false;
     }
 
     private void promptCustomType() {
@@ -480,6 +537,7 @@ public class LocationsWindow extends JFrame {
         created.setAssociatedTerritory("");
         locationTypeData.put(typeName, created);
         territoryHistoryByType.putIfAbsent(typeName, new ArrayList<>());
+        worldDatabase.addLocation(created);
         return created;
     }
 

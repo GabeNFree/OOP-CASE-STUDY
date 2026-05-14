@@ -3,7 +3,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class ChapterOutlinerWindow extends JFrame {
-    public ChapterOutlinerWindow() {
+    private final WorldDatabase worldDatabase;
+
+    public ChapterOutlinerWindow(WorldDatabase worldDatabase) {
+        this.worldDatabase = worldDatabase;
         setTitle("Chapter Outliner");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 450);
