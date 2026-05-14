@@ -16,6 +16,22 @@ public class WorldDatabase {
         allElements.add(element);
     }
 
+    public void addCharacter(Character character) {
+        addElement(character);
+    }
+
+    public void addLocation(Location location) {
+        addElement(location);
+    }
+
+    public void addWorldSystem(WorldSystem worldSystem) {
+        addElement(worldSystem);
+    }
+
+    public void addChapter(Chapter chapter) {
+        addElement(chapter);
+    }
+
     // Standard Search
     public List<StoryElement> searchLore(String keyword) {
         List<StoryElement> results = new ArrayList<>();

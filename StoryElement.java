@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 // Abstraction through abstract class
-abstract class StoryElement implements ISearchable {
+abstract class StoryElement implements ISearchable, Serializable {
 
     private static final long serialVersionUID = 1L; 
 
