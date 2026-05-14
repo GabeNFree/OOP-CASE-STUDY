@@ -3,7 +3,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class WorldSystemsWindow extends JFrame {
-    public WorldSystemsWindow() {
+    private final WorldDatabase worldDatabase;
+
+    public WorldSystemsWindow(WorldDatabase worldDatabase) {
+        this.worldDatabase = worldDatabase;
         setTitle("World Systems");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(700, 450);
